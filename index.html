@@ -1,127 +1,490 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>超声图像重建系统 - Dolphin</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      background-color: #f8f9fa;
-      color: #212529;
-    }
-    header {
-      background-color: #0066cc;
-      color: white;
-      padding: 20px 40px;
-    }
-    header h1 {
-      margin: 0;
-    }
-    nav {
-      margin-top: 10px;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin-right: 20px;
-      font-weight: bold;
-    }
-    .hero {
-      padding: 60px 40px;
-      background-color: #e6f0ff;
-      text-align: center;
-    }
-    .hero h2 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
-    }
-    .hero p {
-      font-size: 1.2em;
-    }
-    .btn {
-      display: inline-block;
-      padding: 12px 24px;
-      background-color: #0066cc;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-      margin-top: 20px;
-      transition: background 0.3s;
-    }
-    .btn:hover {
-      background-color: #004b99;
-    }
-    .features {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      padding: 40px;
-      background-color: white;
-    }
-    .feature {
-      width: 300px;
-      margin: 20px;
-      padding: 20px;
-      border-radius: 10px;
-      background-color: #f1f3f5;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-    .feature h3 {
-      margin-top: 0;
-    }
-    footer {
-      background-color: #343a40;
-      color: white;
-      text-align: center;
-      padding: 20px 10px;
-      margin-top: 40px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini-fUS - 小型化功能性超声成像系统</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), #1a2530);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            animation: fadeInDown 1s ease;
+        }
+        
+        .tagline {
+            font-size: 1.5rem;
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto 1.5rem;
+            animation: fadeInUp 1s ease 0.2s forwards;
+            opacity: 0;
+        }
+        
+        .wave-animation {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ecf0f1" fill-opacity="1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-position: bottom;
+            animation: wave 8s linear infinite;
+        }
+        
+        section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+        
+        .section-header h2:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+        }
+        
+        .intro {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 2.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .intro p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-img {
+            height: 200px;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        
+        .feature-content {
+            padding: 1.5rem;
+        }
+        
+        .feature-content h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .comparison {
+            background-color: var(--light);
+            padding: 3rem 2rem;
+            border-radius: 10px;
+            margin: 3rem 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        th, td {
+            padding: 1.2rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .highlight {
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .experiments {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .experiment-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .experiment-header {
+            background: var(--secondary);
+            color: white;
+            padding: 1.5rem;
+        }
+        
+        .experiment-body {
+            padding: 1.5rem;
+        }
+        
+        .team {
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .team-member {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .conclusion {
+            background: linear-gradient(135deg, var(--secondary), #2980b9);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: 10px;
+            margin: 3rem 0;
+        }
+        
+        footer {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes wave {
+            0% {
+                background-position-x: 0;
+            }
+            100% {
+                background-position-x: 1000px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+            
+            .section-header h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 <body>
-
-<header>
-  <h1>Dolphin</h1>
-  <nav>
-    <a href="#features">产品特点</a>
-    <a href="#download">下载试用</a>
-    <a href="#contact">联系我们</a>
-  </nav>
-</header>
-
-<section class="hero">
-  <h2>让超声图像更清晰、更智能</h2>
-  <p>Dolphin 是一款面向科研】、医疗及工业级应用的高分辨率超声成像系统，结合 TV 正则化与 GPU 加速，重构质量显著优于传统 DAS。</p>
-  <a class="btn" href="#download">立即下载</a>
-</section>
-
-<section id="features" class="features">
-  <div class="feature">
-    <h3>迭代重建 · 更细腻</h3>
-    <p>采用相关算法，边缘锐利、组织细节更加清晰，适合医疗、工业探伤等场景。</p>
-  </div>
-  <div class="feature">
-    <h3>GPU 加速 · 更高效</h3>
-    <p>内置 CUDA 实现，10 倍以上加速，支持多 GPU 并行。</p>
-  </div>
-  <div class="feature">
-    <h3>可扩展 · 开源接口</h3>
-    <p>支持 MATLAB / Python 二次开发，便于集成 AI 模型与自定义算法。</p>
-  </div>
-</section>
-
-<section id="download" class="hero" style="background-color: #ffffff;">
-  <h2>免费下载</h2>
-  <p>提供 Windows 和 Linux 版本，支持 NVIDIA GPU。</p>
-  <a class="btn" href="#">下载 Windows 版本</a>
-  <a class="btn" href="#" style="margin-left: 10px;">下载 Linux 版本</a>
-</section>
-
-<footer id="contact">
-  <p>© 2025 Dolphin 团队 | 联系邮箱：wuwentao111@163.com</p>
-</footer>
-
+    <header>
+        <div class="header-content">
+            <h1>Mini-fUS</h1>
+            <p class="tagline">小型化功能性超声成像系统 - 自由活动小鼠全脑成像的革命性突破</p>
+            <p>创新神经成像技术 | 高时空分辨率 | 低成本解决方案</p>
+        </div>
+        <div class="wave-animation"></div>
+    </header>
+    
+    <section>
+        <div class="intro">
+            <h2>研究背景与突破</h2>
+            <p>功能性超声成像（fUS）具有高时空分辨率和深穿透能力，是未来非侵入性脑机接口（BCI）的关键技术。然而，现有fUS系统体积庞大、成本高昂且操作复杂，限制了其在神经科学研究中的广泛应用。</p>
+            <p>针对这一挑战，我们开发了<span class="highlight">mini-fUS</span>——一款小型化、经济高效的功能性超声成像平台。该系统在保持核心性能的同时，实现了显著的尺寸缩减和成本降低，为自由活动小鼠的脑功能研究开辟了新的可能性。</p>
+        </div>
+        
+        <div class="section-header">
+            <h2>技术创新与系统特点</h2>
+            <p>突破传统限制，重新定义功能性超声成像</p>
+        </div>
+        
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-img">📐</div>
+                <div class="feature-content">
+                    <h3>极致小型化设计</h3>
+                    <p>采用紧凑型发射接收器、低噪声电源和高速数据传输模块，系统体积大幅减小，重量显著降低，适合自由活动动物研究。</p>
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-img">⚡</div>
+                <div class="feature-content">
+                    <h3>高性能成像能力</h3>
+                    <p>脉冲重复频率高达5kHz，时间抖动小于500fs，实现高精度成像。空间分辨率约100μm，穿透深度达15mm，满足全脑成像需求。</p>
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-img">💻</div>
+                <div class="feature-content">
+                    <h3>实时GPU加速处理</h3>
+                    <p>创新的GPU加速波束形成和奇异值分解(SVD)算法，处理速度比传统方法提高三倍，实现3.57Hz的全脑活动成像。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="comparison">
+            <h3>Mini-fUS与传统系统对比</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>特性</th>
+                        <th>传统fUS系统</th>
+                        <th>Mini-fUS系统</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>尺寸与重量</td>
+                        <td>大型设备，笨重</td>
+                        <td class="highlight">小型化，轻量设计</td>
+                    </tr>
+                    <tr>
+                        <td>成本</td>
+                        <td>高昂（数十万至百万级）</td>
+                        <td class="highlight">显著降低（约1/3-1/5）</td>
+                    </tr>
+                    <tr>
+                        <td>自由活动兼容性</td>
+                        <td>仅限于头部固定动物</td>
+                        <td class="highlight">支持自由活动小鼠研究</td>
+                    </tr>
+                    <tr>
+                        <td>空间分辨率</td>
+                        <td>约100μm</td>
+                        <td class="highlight">约100μm（可分辨皮层微血管）</td>
+                    </tr>
+                    <tr>
+                        <td>时间分辨率</td>
+                        <td>~10Hz</td>
+                        <td class="highlight">最高3.57Hz（全脑成像）</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    
+    <section style="background-color: #f0f7ff;">
+        <div class="section-header">
+            <h2>实验验证与应用</h2>
+            <p>多场景验证系统性能，展示广泛应用前景</p>
+        </div>
+        
+        <div class="experiments">
+            <div class="experiment-card">
+                <div class="experiment-header">
+                    <h3>感觉刺激实验</h3>
+                </div>
+                <div class="experiment-body">
+                    <p>在清醒、头部固定的小鼠上进行胡须刺激实验，成功检测到对侧躯体感觉皮层(S1bf)的血液动力学响应。</p>
+                    <p>🔬 单次试验即可检测到约20%的功率多普勒信号增加</p>
+                    <p>📊 高时空分辨率捕捉脑活动的时空演变过程</p>
+                </div>
+            </div>
+            
+            <div class="experiment-card">
+                <div class="experiment-header">
+                    <h3>麻醉药理实验</h3>
+                </div>
+                <div class="experiment-body">
+                    <p>研究2%异氟烷麻醉对脑血液动力学的影响，观察到全脑血容量(CBV)的增加和皮层信号波动的显著降低。</p>
+                    <p>💊 皮层信号波动幅度：清醒状态6.6±4.4% → 麻醉状态3.7±2.6%</p>
+                    <p>⏱️ 成功追踪药物诱导的血容量变化和血液动力学变异性改变</p>
+                </div>
+            </div>
+            
+            <div class="experiment-card">
+                <div class="experiment-header">
+                    <h3>自由活动行为实验</h3>
+                </div>
+                <div class="experiment-body">
+                    <p>在自由活动小鼠的杆测试中，成功捕捉到运动相关脑活动。</p>
+                    <p>🐭 使用轻量级头戴装置(约2g)进行无拘束成像</p>
+                    <p>🧠 观察到初级和次级运动皮层(M1/M2)的显著激活</p>
+                    <p>📈 CBV信号动态与行为序列紧密相关</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section>
+        <div class="section-header">
+            <h2>研究意义与前景</h2>
+        </div>
+        
+        <div class="conclusion">
+            <h2>开启神经科学研究新篇章</h2>
+            <p style="max-width: 800px; margin: 1.5rem auto; font-size: 1.2rem;">Mini-fUS系统通过显著降低功能性超声成像的技术门槛和成本，将推动神经科学基础研究和未来脑机接口技术的发展。这一创新平台为研究自然行为下的全脑神经活动提供了强大工具，有望在神经环路功能、行为研究和神经病理学领域加速科学发现。</p>
+            
+            <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;">
+                <div style="background: rgba(255,255,255,0.2); padding: 1.5rem; border-radius: 10px; width: 220px;">
+                    <h3>神经科学研究</h3>
+                    <p>自由活动动物全脑成像</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 1.5rem; border-radius: 10px; width: 220px;">
+                    <h3>药物开发</h3>
+                    <p>高通量神经药理学筛选</p>
+                </div>
+                <div style="background: rgba(255,255,255,0.2); padding: 1.5rem; border-radius: 10px; width: 220px;">
+                    <h3>脑机接口</h3>
+                    <p>下一代非侵入式BCI技术</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="team">
+            <div class="section-header">
+                <h2>研究团队</h2>
+            </div>
+            <p>本研究由广东智能科学与技术研究院、中国科学院声学研究所与香港理工大学联合团队完成</p>
+            
+            <div class="team-grid">
+                <div class="team-member">
+                    <h3>邱志海 教授</h3>
+                    <p>通讯作者</p>
+                    <p>广东智能科学与技术研究院</p>
+                </div>
+                <div class="team-member">
+                    <h3>孙雷 教授</h3>
+                    <p>通讯作者</p>
+                    <p>香港理工大学</p>
+                </div>
+                <div class="team-member">
+                    <h3>吴文涛 教授</h3>
+                    <p>通讯作者</p>
+                    <p>中国科学院声学研究所</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <p>© 2025 | 功能性超声成像研究团队 | 论文发表于 bioRxiv (doi: https://doi.org/10.1101/2025.04.24.650351)</p>
+        <p>广东省智能科学与技术研究院 | 中国科学院声学研究所 | 香港理工大学</p>
+    </footer>
 </body>
 </html>
